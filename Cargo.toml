@@ -1,0 +1,29 @@
+[package]
+name = "emergency_backup"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+env_logger = "0.11.5"
+rdev= "0.5.3"
+winit = "0.28" #
+serde = { version = "1.0.215", features = ["derive"] }
+toml = "0.8.19"
+winreg = "0.52.0"
+chrono = "0.4.38"
+serde_derive = "1.0.215"
+rodio = "0.17"
+sysinfo = "0.29"
+walkdir = "2.5.0"
+tempfile = "3.14.0"
+druid="0.8.3"
+[dev-dependencies]
+tempfile = "3.6"
+
+[features]
+windows_subsystem = []
+
+[[bin]]
+name = "emergency_backup"
+path = "src/main.rs"
+required-features = ["windows_subsystem"]
