@@ -6,12 +6,14 @@ use std::env;
 use std::io::{self, Write};
 use std::fs::OpenOptions;
 use chrono::Local;
+use walkdir::WalkDir;
 
 #[derive(Deserialize, Debug)]
 pub struct Config {
     pub source_path: String,
     pub file_types: Vec<String>
 }
+
 
 fn load_config(path: &str) -> Result<Config, Box<dyn Error>> {
     // Ottieni il percorso dell'eseguibile
@@ -32,12 +34,15 @@ fn load_config(path: &str) -> Result<Config, Box<dyn Error>> {
     if !config_path.exists() {
         return Err(format!("Il file di configurazione non esiste: {}", config_path.display()).into());
     }
-
     // Leggi il contenuto del file di configurazione
     let config_data = fs::read_to_string(&config_path)?;
     // Parse del file TOML nella struttura `Config`
-    let config: Config = toml::from_str(&config_data)?;
+    let mut config: Config = toml::from_str(&config_data)?;
 
+    let source = Path::new(&config.source_path);
+    if !source.exists() {
+        return Err(format!("Il percorso sorgente non esiste!").into());
+    }
 
     Ok(config)
 }

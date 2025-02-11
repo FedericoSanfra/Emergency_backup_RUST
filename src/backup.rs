@@ -5,6 +5,7 @@ use std::time::Instant;
 use walkdir::WalkDir;
 use std::io::Write;
 use crate::config_boot::Config;
+use crate::utils;
 
 /// Copia un file o directory dalla sorgente alla destinazione.
 pub fn execute(config: Config, destination: &String) -> std::io::Result<()> {
@@ -78,7 +79,7 @@ fn is_valid_file(file_path: &Path, config: &Config) -> bool {
     let file_extension = file_path.extension().and_then(|e| e.to_str()).unwrap_or("");
     for pattern in &config.file_types {
        // println!("file extension {:?} and pattern {:?}", file_extension, pattern);
-        if match_file_extension(file_extension, pattern) {
+        if utils::match_file_extension(file_extension, pattern) {
 
             return true;
         }
@@ -88,13 +89,3 @@ fn is_valid_file(file_path: &Path, config: &Config) -> bool {
     false
 }
 
-/// Funzione per verificare se un file corrisponde a un pattern di estensione (es. "*.txt")
-fn match_file_extension(extension: &str, pattern: &str) -> bool {
-    // Confronta l'estensione con il pattern (es. "*.txt")
-    if pattern.starts_with('*') {
-        return extension.ends_with(&pattern[2..]); // es. "*.txt" -> "txt"
-    }
-
-    // Se il pattern non è un wildcard, confronta direttamente
-    extension == pattern
-}

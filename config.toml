@@ -1,2 +1,2 @@
 source_path = 'C:\Users\simeo\OneDrive - Politecnico di Torino\Desktop\backup_folder'
-file_types = ["*.txt", "*.pdf"]
+file_types = []
